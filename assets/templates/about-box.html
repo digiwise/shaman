@@ -1,0 +1,76 @@
+<link rel="import" href="../../lib/polymer.html">
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <about-box></about-box>
+
+@element about-box
+@simple title and description box.
+@status alpha
+-->
+<polymer-element name="about-box" attributes="notitle author show header text">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        opacity: 0.3;
+        transition: opacity 400ms ease-in-out;
+        position: absolute;
+        left: 50%;
+        top: 5%;
+        width: 35%;
+        height: auto;
+        padding: 0;
+        background-color: rgb(255,255,255);
+        border: 1px solid #000;
+        z-index: 99;
+      }
+      :host(:hover) { opacity: 0.80; }
+      h1 {
+        margin: 0;
+        padding: 20px;
+        background-color: rgba(0,0,0,0.7);
+        color: #fafafa;
+      }
+      #text {
+        padding: 20px;
+      }
+
+    </style>
+
+    <div id="container">
+      <h1 id="header">{{header}}</h1>
+      <div id="text">
+        <span>{{text}}</span>
+      </div>
+    </div>
+    <content></content>
+
+  </template>
+
+  <script>
+    Polymer({
+      author: 'Sam Carecho',
+
+      ready: function() {
+
+        this.show = false;
+      },
+
+      showChanged: function() {
+        //console.log(this.show);
+        if (this.show == true){
+          this.style.opacity = 0.8;
+          vid.removeEventListener('show');
+        }
+      }
+
+    });
+  </script>
+
+</polymer-element>
