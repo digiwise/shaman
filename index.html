@@ -4,9 +4,16 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <title>video-background Demo</title>
 
-    <script src="lib/platform.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+
     <link rel="import" href="assets/templates/video-background.html">
     <link rel="import" href="assets/templates/about-box.html">
+
+    <style>
+        about-box:unresolved {
+            opacity: 0.3;
+        }
+    </style>
 
 </head>
 <body unresolved style="margin:0;background-color:#000;">
@@ -14,8 +21,8 @@
 <video-background id="vbg" width="100%"></video-background>
 <about-box id="abx"
            show="false"
-           header="Shaman"
-           text="A shaman is a person regarded as having access to, and influence in, the world of benevolent and malevolent spirits, who typically enters into a trance state during a ritual, and practices divination and healing." ></about-box>
+           heading="Shaman"
+           value="A shaman is a person regarded as having access to, and influence in, the world of benevolent and malevolent spirits, who typically enters into a trance state during a ritual, and practices divination and healing." ></about-box>
 
 <script>
     var vid = document.querySelector('#vbg');

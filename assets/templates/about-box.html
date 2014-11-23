@@ -1,17 +1,19 @@
-<link rel="import" href="../../lib/polymer.html">
-
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-animation/core-animation.html">
+<link rel="import" href="marked-it.html">
 <!--
 Element providing solution to no problem in particular.
 
+
 ##### Example
 
-    <about-box></about-box>
+    <marked-it></marked-it>
 
 @element about-box
 @simple title and description box.
 @status alpha
 -->
-<polymer-element name="about-box" attributes="notitle author show header text">
+<polymer-element name="about-box" attributes="notitle author show heading value">
 
   <template>
 
@@ -28,27 +30,33 @@ Element providing solution to no problem in particular.
         padding: 0;
         background-color: rgb(255,255,255);
         border: 1px solid #000;
-        z-index: 99;
+        z-index: 2;
       }
-      :host(:hover) { opacity: 0.80; }
+      :host(:hover) { opacity: 0.9; }
       h1 {
         margin: 0;
         padding: 20px;
-        background-color: rgba(0,0,0,0.7);
+        background-color: rgba(0,0,0,0.9);
         color: #fafafa;
+        z-index: 6;
       }
       #text {
         padding: 20px;
+        z-index: 6;
       }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+
 
     </style>
 
-    <div id="container">
-      <h1 id="header">{{header}}</h1>
-      <div id="text">
-        <span>{{text}}</span>
-      </div>
-    </div>
+    <section id="container">
+      <h1 id="title" contenteditable="true">{{heading}}</h1>
+      <div id="text" contenteditable="false" on-click="{{ showEditor }}">{{value}}</div>
+      <marked-it id="marked" contenteditable="false" value="{{value}}"></marked-it>
+    </section>
     <content></content>
 
   </template>
@@ -57,19 +65,53 @@ Element providing solution to no problem in particular.
     Polymer({
       author: 'Sam Carecho',
 
-      ready: function() {
+      observe: {
+        'model.value':'modelValueChanged'
 
+      },
+      ready: function() {
         this.show = false;
+        //this.model =
+        //this.value = this.value;
+
+          this.modelValueChanged = function(oldValue, newValue) {
+            this.$.text.innerHTML = newValue;
+          };
+
+        this.model = this.$.marked;
       },
 
       showChanged: function() {
         //console.log(this.show);
         if (this.show == true){
-          this.style.opacity = 0.8;
+          this.style.opacity = 0.9;
           vid.removeEventListener('show');
         }
-      }
+      },
 
+      showEditor: function() {
+        var boxHeight = this.clientHeight;
+        var titleHeight = this.$.title.clientHeight;
+        var animDir = "normal";
+        var elem = this.$.marked;
+
+        if (elem.style.display == "none"){
+          elem.style.display = 'block';
+        } else {
+          animDir = "reverse";
+        }
+
+        var player = document.timeline.play(new Animation(elem, [
+                  {opacity: "0.0", top: titleHeight + "px"},
+                  {opacity: "0.9", top: boxHeight + "px"}
+                ],
+                {
+                  direction: animDir, duration: 200, iterations: 1
+                }));
+        if (animDir == "reverse") {
+          setTimeout(function(){elem.style.display = 'none';}, 190);
+        }
+      }
     });
   </script>
 
